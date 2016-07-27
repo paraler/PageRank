@@ -1,4 +1,3 @@
-package sprsemartix;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -44,20 +43,21 @@ class focusCount//三元组表
 }
 
 
-public class PageRankOB 
+public class PageRank
 {
 	//static DecimalFormat df=new DecimalFormat("0.000");//控制输出格式
 	int num=0;//已经迭代的次数
 	static int number;//总共需要迭代的次数
 	static int N;//数据总量
+	static int n;
 	static double k=1.0/N;
 	@SuppressWarnings("rawtypes")
 	static List<List> arrayList=new ArrayList<>();
+	static TreeMap<String,Integer>tree=new TreeMap<String,Integer>();
 	
-	
-	OB
 	 TreeMap<String,Integer> read()
-		{ TreeMap<String,Integer>tree=new TreeMap<String,Integer>();  
+		{ 
+		 //TreeMap<String,Integer>tree=new TreeMap<String,Integer>();  
 			try {
 				@SuppressWarnings("resource")
 				Scanner scanner=new Scanner(System.in);//**************创建读
@@ -201,7 +201,7 @@ void rankCal(double[] rankMartix,double[][] rankResult)//迭代计算
 	{
 		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//设置日期格式
 		System.out.println(date.format(new Date()));// new Date()为获取当前系统时间
-		sparseMartix martix=new sparseMartix();
+		PageRank martix=new PageRank();
 		//Pattern pattern=Pattern.compile("\\d*");//原本是想判断关注ID是否是是数字；
 	
 		martix.read();//调用读函数，以便生成新的Excel表
@@ -260,7 +260,7 @@ void rankCal(double[] rankMartix,double[][] rankResult)//迭代计算
 			System.out.println("迭代完毕");
 			System.out.println(date.format(new Date()));// new Date()为获取当前系统时间
 			
-			int n=N;
+			n=N;
 			//排序输出，希尔排序，复杂度为lognN
 			while(true)
 			{
@@ -295,28 +295,29 @@ void rankCal(double[] rankMartix,double[][] rankResult)//迭代计算
 			}else{
 				n=20;
 			}
-			
+			/*
 			for(int i=0;i<n;i++)//排完序之后的rank值输出
 			{
+				
+				
 				//DecimalFormat df=new DecimalFormat("0.000");
 				System.out.println("第"+(i+1)+"名"+rankResult[i][0]);
 			}
-			//查找算法
-			//有rank值相等的情况
-			/*
-			 * for(int j=0;j<n;j++)
-			{
-				boolean bool=true;
-				for(int i=0;i<N;i++){
-					if(rankResult[i]==sortArray[j]&&bool){
-						rankResult[i]=0;
-						rankResult[i]-=i;
-						bool=false;
-						System.out.println(i);
-						}
-				}
-			}
 			*/
+			for(int i=0;i<n;i++)//排完序之后的rank值输出
+			{
+		        Iterator it = tree.keySet().iterator(); 
+		       //遍历查找对应的真实ID并输出
+		        while (it.hasNext())                
+		          if(rankResult[i][1]==tree.get(it.next()))
+		          {
+		        	  System.out.println("第"+(i+1)+"名"+it.next());
+		        	  System.out.println(rankResult[i][0]);
+		        }   
+				//DecimalFormat df=new DecimalFormat("0.000");
+				//System.out.println("第"+(i+1)+"名"+rankResult[i][0]);
+			}
+			
 			
 			System.out.println(date.format(new Date()));// new Date()为获取当前系统时间
 	}
